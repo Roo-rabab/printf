@@ -1,125 +1,73 @@
-#include "main.h"
-#include <unistd.h>
-
-/************************* PRINT CHAR *************************/
-
+#include "holberton.h"
 /**
- * print_char - Prints a char
- * @types: List of arguments
- * @buffer: Buffer array to handle print
- * @flags: Calculates active flags
- * @width: Width
- * @precision: Precision specification
- * @size: Size specifier
- * Return: Number of chars printed
- */
-int print_char(va_list types, char buffer[],
-int flags, int width, int precision, int size)
+ * p_char - prints char
+ * @args: va_list
+ * Return: number of characters printed
+*/
+int p_char(va_list args)
 {
-char c = va_arg(types, int);
+	char ch[2];
+	int i;
 
-return (handle_write_char(c, buffer, flags, width, precision, size));
+	ch[1] = '\0';
+	ch[0] = va_arg(args, int);
+	i = _putchar(ch);
+return (i);
 }
-
-/************************* PRINT A STRING *************************/
 /**
- * print_string - Prints a string
- * @types: List of arguments
- * @buffer: Buffer array to handle print
- * @flags: Calculates active flags
- * @width: Width
- * @precision: Precision specification
- * @size: Size specifier
- * Return: Number of chars printed
- */
-int print_string(va_list types, char buffer[],
-int flags, int width, int precision, int size)
+ * p_string - prints string
+ * @args: va_list
+ * Return: number of characters printed
+*/
+int p_string(va_list args)
 {
-int length = 0, i;
-char *str = va_arg(types, char *);
+	char *s;
+	int i = 6;
 
-UNUSED(buffer);
-UNUSED(flags);
-UNUSED(width);
-UNUSED(precision);
-UNUSED(size);
-if (str == NULL)
-{
-str = "(null)";
-if (precision >= 6)
-str = "      ";
+	s = va_arg(args, char*);
+	if (s)
+	i = _printarg(s);
+	else
+	_printarg("(null)");
+return (i);
 }
-
-while (str[length] != '\0')
-length++;
-
-if (precision >= 0 && precision < length)
-length = precision;
-
-if (width > length)
-{
-if (flags & F_MINUS)
-{
-write(1, &str[0], length);
-for (i = width - length; i > 0; i--)
-write(1, " ", 1);
-return (width);
-}
-else
-{
-for (i = width - length; i > 0; i--)
-write(1, " ", 1);
-write(1, &str[0], length);
-return (width);
-}
-}
-
-return (write(1, str, length));
-}
-
-/************************* PRINT PERCENT SIGN *************************/
 /**
- * print_percent - Prints a percent sign
- * @types: List of arguments
- * @buffer: Buffer array to handle print
- * @flags: Calculates active flags
- * @width: Width
- * @precision: Precision specification
- * @size: Size specifier
- * Return: Number of chars printed
- */
-int print_percent(va_list types, char buffer[],
-int flags, int width, int precision, int size)
+ * p_percent - prints percent symbol
+ * @args: va_list
+ * Return: number of characters printed
+*/
+int p_percent(va_list args __attribute__((unused)))
 {
-UNUSED(types);
-UNUSED(buffer);
-UNUSED(flags);
-UNUSED(width);
-UNUSED(precision);
-UNUSED(size);
-return (write(1, "%%", 1));
+	char *s;
+	int i;
+
+	s = "%";
+	i = _putchar(s);
+return (i);
 }
-
-/************************* PRINT INT *************************/
 /**
- * print_int - Prints an integer
- * @types: List of arguments
- * @buffer: Buffer array to handle print
- * @flags: Calculates active flags
- * @width: Width
- * @precision: Precision specification
- * @size: Size specifier
- * Return: Number of chars printed
- */
-int print_int(va_list types, char buffer[],
-int flags, int width, int precision, int size)
+ * p_int - prints an integer
+ * @args: va_list
+ * Return: number of characters printed
+*/
+int p_int(va_list args)
 {
-int i = BUFF_SIZE - 2;
-int is_negative = 0;
-long int n = va_arg(types, long int);
-unsigned long int num;
+	char *str;
+	char *sign;
+	int i = 0;
+	int num;
+	unsigned int num2;
 
-n = convert_size_number(n, size);
-
-if (n == 0)
-buffer[i
+	sign = "-";
+	num =  va_arg(args, int);
+	num2 = num;
+	if (num < 0)
+	{
+		_putchar(sign);
+		num2 = -num;
+		i = 1;
+	}
+	str = change_base(num2, 10);
+	i += _printarg(str);
+return (i);
+}
