@@ -1,0 +1,16 @@
+#include "main.h"
+
+int main(void)
+{
+char c = 'A';
+char *str = "Hello, world!";
+int count;
+
+count = _printf("Character: %c\n", c);
+_printf("Number of characters printed: %d\n", count);
+_printf("String: %s\n", str);
+_printf("%%\n");
+
+return 0;
+}
+
